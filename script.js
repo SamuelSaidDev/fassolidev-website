@@ -7,28 +7,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const contactForm = document.getElementById('contactForm');
 
     // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
 
     // Mobile menu toggle
-    mobileMenuToggle.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
-        
-        // Animate hamburger icon
-        const spans = mobileMenuToggle.querySelectorAll('span');
-        spans[0].style.transform = navMenu.classList.contains('active') 
-            ? 'rotate(-45deg) translate(-5px, 6px)' 
-            : 'rotate(0) translate(0, 0)';
-        spans[1].style.opacity = navMenu.classList.contains('active') ? '0' : '1';
-        spans[2].style.transform = navMenu.classList.contains('active') 
-            ? 'rotate(45deg) translate(-5px, -6px)' 
-            : 'rotate(0) translate(0, 0)';
-    });
+    if (mobileMenuToggle && navMenu) {
+        mobileMenuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            
+            // Animate hamburger icon
+            const spans = mobileMenuToggle.querySelectorAll('span');
+            spans[0].style.transform = navMenu.classList.contains('active') 
+                ? 'rotate(-45deg) translate(-5px, 6px)' 
+                : 'rotate(0) translate(0, 0)';
+            spans[1].style.opacity = navMenu.classList.contains('active') ? '0' : '1';
+            spans[2].style.transform = navMenu.classList.contains('active') 
+                ? 'rotate(45deg) translate(-5px, -6px)' 
+                : 'rotate(0) translate(0, 0)';
+        });
+    }
 
     // Smooth scrolling and active link highlighting
     navLinks.forEach(link => {
@@ -94,10 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             // Show success message
-            alert('Thank you for your message! We will get back to you soon.');
+            const submitButton = contactForm.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Message Sent!';
+            submitButton.style.background = '#28a745';
             
-            // Reset form
-            contactForm.reset();
+            // Reset form and button after 3 seconds
+            setTimeout(() => {
+                contactForm.reset();
+                submitButton.textContent = originalText;
+                submitButton.style.background = '';
+            }, 3000);
 
             // In a real application, you would send this data to a server
             console.log('Form submitted:', formData);
